@@ -1,7 +1,10 @@
-from flask import Flask, render_template, request, redirect, flash, url_for, session
+from flask import Flask, render_template, request, redirect, flash, url_for, session, Response
 from db import db
 from models import Reserva, TwitchUser
 import pkgutil
+from apscheduler.schedulers.background import BackgroundScheduler
+from io import BytesIO
+from openpyxl import Workbook
 
 # Parche para compatibilidad con Python 3.14
 if not hasattr(pkgutil, "get_loader"):
@@ -24,13 +27,31 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# Función para verificar disponibilidad
+# ---------------------------
+# FUNCIONES AUXILIARES
+# ---------------------------
+
 def hora_disponible(hora):
     return not Reserva.query.filter(
         (Reserva.hora1 == hora) | (Reserva.hora2 == hora) | (Reserva.hora3 == hora)
     ).first()
 
-# Página principal con formulario de reservas
+def reset_reservas():
+    """Borra todas las reservas cada sábado a las 23:59"""
+    with app.app_context():
+        Reserva.query.delete()
+        db.session.commit()
+        print("Reservas reiniciadas ✅")
+
+# Scheduler para reinicio semanal
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=reset_reservas, trigger="cron", day_of_week="sat", hour=23, minute=59)
+scheduler.start()
+
+# ---------------------------
+# RUTAS PÚBLICAS
+# ---------------------------
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     horas = [f"{dia} {h}:00" for dia in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"] for h in range(16, 25)]
@@ -103,7 +124,38 @@ def admin_add_twitch():
     return redirect(url_for("admin_panel"))
 
 # ---------------------------
+# EXPORTAR HORARIO A EXCEL
+# ---------------------------
+
+@app.route("/export/excel")
+def export_excel():
+    if not session.get("is_admin"):
+        flash("Acceso restringido ❌")
+        return redirect(url_for("login"))
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Reservas"
+
+    # Encabezados
+    ws.append(["Twitch URL", "Hora 1", "Hora 2", "Hora 3"])
+
+    # Filas con reservas
+    for r in Reserva.query.all():
+        twitch_url = f"https://twitch.tv/{r.twitch_id}"
+        ws.append([twitch_url, r.hora1, r.hora2, r.hora3])
+
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+
+    return Response(output,
+                    mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                    headers={"Content-Disposition":"attachment;filename=reservas.xlsx"})
+
+# ---------------------------
 
 # Ejecutar servidor
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+

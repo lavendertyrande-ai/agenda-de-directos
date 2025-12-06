@@ -8,31 +8,33 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
+  font-size: 1em; /* base */
 }
 
 /* Título */
 .titulo {
-  font-size: 3rem;
+  font-size: 3em;
   color: #FFFFFF;
-  margin-bottom: 2rem;
+  margin-bottom: 2em;
 }
 
 /* Formulario */
 .formulario {
   background: rgba(0, 0, 0, 0.6);
-  border-radius: 8px;
-  width: 350px;
+  border-radius: 0.5em;
+  width: 30em; /* ancho base en escritorio */
   margin: 0 auto;
   color: #f2f2f2;
+  padding: 2em;
 }
 
 /* Inputs y selects */
 select, input {
   width: 100%;
-  padding: 8px;
-  margin: 5px 0;
+  padding: 0.8em;
+  margin: 0.5em 0;
   background-color: #1a1a1a;
-  border: 2px solid #d9d9d9;
+  border: 0.15em solid #d9d9d9;
   color: #f2f2f2;
   font-family: "DM Serif Text", serif;
 }
@@ -40,7 +42,7 @@ select, input {
 select:focus, input:focus {
   outline: none;
   border-color: #ff0000;
-  box-shadow: 0 0 10px #ff0000;
+  box-shadow: 0 0 1em #ff0000;
 }
 
 /* Botón RESERVAR en rojo */
@@ -48,17 +50,17 @@ select:focus, input:focus {
   background-color: #b30000;
   color: #f2f2f2;
   border: none;
-  padding: 12px 24px;
+  padding: 1.2em 2.4em;
   font-weight: bold;
   text-transform: uppercase;
   font-family: "DM Serif Text", serif;
-  box-shadow: 0 0 10px #660000;
+  box-shadow: 0 0 1em #660000;
   transition: all 0.3s ease;
 }
 
 .boton-reservar:hover {
   background-color: #660000;
-  box-shadow: 0 0 15px #b30000;
+  box-shadow: 0 0 1.5em #b30000;
   transform: scale(1.05);
 }
 
@@ -67,12 +69,29 @@ footer {
   background-color: rgba(0,0,0,0.8);
   color: #d9d9d9;
   text-align: center;
-  padding: 20px;
-  font-size: 14px;
-  border-top: 3px solid #b30000;
+  padding: 2em;
+  font-size: 0.9em;
+  border-top: 0.3em solid #b30000;
 }
 
 footer span {
   color: #b30000;
   font-weight: bold;
+}
+
+/* 📱 Media query para pantallas pequeñas */
+@media (max-width: 768px) {
+  .formulario {
+    width: 90%;   /* ocupa casi todo el ancho en móvil */
+    padding: 1.5em;
+  }
+
+  .titulo {
+    font-size: 2em; /* título más compacto en móvil */
+  }
+
+  .boton-reservar {
+    width: 100%; /* botón ocupa todo el ancho */
+    padding: 1em;
+  }
 }
