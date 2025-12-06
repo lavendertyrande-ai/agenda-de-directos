@@ -26,3 +26,101 @@ button {
 button:hover {
     background: #ff00ff;
 }
+
+/* Fondo general */
+body {
+  background-color: #0a0a0a; /* negro profundo */
+  color: #d9d9d9; /* plata envejecida */
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Encabezados */
+h1, h2, h3 {
+  color: #b30000; /* rojo intenso */
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-bottom: 2px solid #d9d9d9;
+  padding-bottom: 5px;
+}
+
+/* Botones */
+button {
+  background: #b30000; /* rojo intenso */
+  color: #f2f2f2; /* plata clara */
+  border: none;
+  padding: 12px 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 10px #660000;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #660000; /* rojo oscuro al pasar el ratón */
+  box-shadow: 0 0 15px #b30000;
+  transform: scale(1.05);
+}
+
+/* Inputs y formularios */
+input, textarea {
+  background-color: #1a1a1a;
+  border: 2px solid #d9d9d9;
+  color: #f2f2f2;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: #b30000;
+  box-shadow: 0 0 10px #b30000;
+}
+
+/* Footer */
+footer {
+  background-color: #111;
+  color: #d9d9d9;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  border-top: 2px solid #b30000;
+}
+
+/* Footer serio */
+footer {
+  background-color: #0a0a0a; /* negro profundo */
+  color: #d9d9d9; /* plata envejecida */
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  border-top: 3px solid #b30000; /* línea roja intensa arriba */
+  position: relative;
+}
+
+/* Línea plateada decorativa */
+footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  background: linear-gradient(to right, #d9d9d9, #b30000, #d9d9d9);
+}
+
+/* Texto destacado */
+footer p {
+  margin: 0;
+  color: #d9d9d9;
+}
+
+footer p span {
+  color: #b30000; /* resaltar branding en rojo */
+  font-weight: bold;
+}

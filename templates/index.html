@@ -3,13 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulario de Inscripción</title>
+    <!-- Fuente seria y elegante -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Tu hoja de estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
     <h1>Agendar Horas</h1>
+
+    <!-- Formulario principal de reservas -->
     <form method="POST">
-        <label>ID de Twitch:</label>
-        <input type="text" name="twitch_id" required><br><br>
+        <label>Selecciona ID de Twitch:</label>
+        <select name="twitch_id" required>
+            {% for user in ids %}
+                <option value="{{ user.twitch_id }}">{{ user.twitch_id }}</option>
+            {% endfor %}
+        </select><br><br>
 
         <label>Hora 1:</label>
         <select name="hora1">
@@ -35,6 +44,7 @@
         <button type="submit">Reservar</button>
     </form>
 
+    <!-- Mensajes flash -->
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -44,5 +54,18 @@
         </ul>
       {% endif %}
     {% endwith %}
+
+    <!-- Formulario para añadir nuevas IDs de Twitch -->
+    <form method="POST" action="/add_twitch">
+        <label>Añadir nuevo ID de Twitch:</label>
+        <input type="text" name="twitch_id" required>
+        <button type="submit">Añadir</button>
+    </form>
+
+    <!-- Footer serio -->
+    <footer>
+        <p>&copy; 2025 <span>Agenda de Directos</span> | Todos los derechos reservados por Alas Negras Community</p>
+    </footer>
 </body>
 </html>
+
