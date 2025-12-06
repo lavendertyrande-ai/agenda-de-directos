@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Inscripción</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Agendar Horas</h1>
+    <form method="POST">
+        <label>ID de Twitch:</label>
+        <input type="text" name="twitch_id" required><br><br>
+
+        <label>Hora 1:</label>
+        <select name="hora1">
+            {% for h in horas %}
+                <option value="{{h}}">{{h}}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Hora 2:</label>
+        <select name="hora2">
+            {% for h in horas %}
+                <option value="{{h}}">{{h}}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Hora 3:</label>
+        <select name="hora3">
+            {% for h in horas %}
+                <option value="{{h}}">{{h}}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <button type="submit">Reservar</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for msg in messages %}
+            <li>{{ msg }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>
