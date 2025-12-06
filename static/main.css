@@ -1,4 +1,4 @@
-/* Aplicar DM Serif Text */
+/* Base */
 body {
   background: #870000;
   background: -webkit-linear-gradient(to left, #190A05, #870000);
@@ -8,22 +8,49 @@ body {
   margin: 0;
   padding: 0;
   text-align: center;
-  font-size: 1em; /* base */
+  font-size: 1em;
+}
+
+/* Topbar */
+.topbar {
+  background: rgba(0,0,0,0.7);
+  border-bottom: 0.3em solid #b30000;
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em 2em;
+}
+.brand {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.nav .nav-link {
+  color: #f2f2f2;
+  text-decoration: none;
+  margin-left: 1em;
+  padding: 0.4em 0.8em;
+  border: 0.1em solid #b30000;
+  border-radius: 0.3em;
+}
+.nav .nav-link:hover {
+  background: #b30000;
 }
 
 /* Título */
 .titulo {
   font-size: 3em;
   color: #FFFFFF;
-  margin-bottom: 2em;
+  margin: 1em 0 1em 0;
 }
 
 /* Formulario */
 .formulario {
   background: rgba(0, 0, 0, 0.6);
   border-radius: 0.5em;
-  width: 30em; /* ancho base en escritorio */
-  margin: 0 auto;
+  width: 30em;
+  margin: 0 auto 2em auto;
   color: #f2f2f2;
   padding: 2em;
 }
@@ -45,7 +72,7 @@ select:focus, input:focus {
   box-shadow: 0 0 1em #ff0000;
 }
 
-/* Botón RESERVAR en rojo */
+/* Botón */
 .boton-reservar {
   background-color: #b30000;
   color: #f2f2f2;
@@ -56,12 +83,27 @@ select:focus, input:focus {
   font-family: "DM Serif Text", serif;
   box-shadow: 0 0 1em #660000;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .boton-reservar:hover {
   background-color: #660000;
   box-shadow: 0 0 1.5em #b30000;
   transform: scale(1.05);
+}
+
+/* Mensajes flash */
+.flash {
+  list-style: none;
+  padding: 0;
+  margin: 1em auto 2em auto;
+  max-width: 30em;
+}
+.flash li {
+  background: rgba(255,255,255,0.1);
+  border: 0.1em solid #b30000;
+  padding: 0.8em;
+  margin-bottom: 0.5em;
 }
 
 /* Footer */
@@ -73,25 +115,26 @@ footer {
   font-size: 0.9em;
   border-top: 0.3em solid #b30000;
 }
-
 footer span {
   color: #b30000;
   font-weight: bold;
 }
 
-/* 📱 Media query para pantallas pequeñas */
+/* Responsive */
 @media (max-width: 768px) {
   .formulario {
-    width: 90%;   /* ocupa casi todo el ancho en móvil */
+    width: 90%;
     padding: 1.5em;
   }
-
   .titulo {
-    font-size: 2em; /* título más compacto en móvil */
+    font-size: 2em;
   }
-
   .boton-reservar {
-    width: 100%; /* botón ocupa todo el ancho */
+    width: 100%;
     padding: 1em;
+  }
+  .topbar-inner {
+    flex-direction: column;
+    gap: 0.8em;
   }
 }

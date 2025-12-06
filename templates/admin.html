@@ -1,91 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Panel de Administración</title>
-
-    <!-- Fuente DM Serif Text -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
-
-    <!-- Tema Materia de Bootswatch -->
-    <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/materia/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Tu hoja de estilos -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <meta charset="UTF-8" />
+  <title>Admin · Agenda de Directos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Agenda de Directos</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/logout">Cerrar sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <h1 class="titulo">Panel de Administración</h1>
-
-        <!-- Formulario para añadir IDs -->
-        <form method="POST" action="/admin/add_twitch" class="card p-4 shadow-sm formulario mb-4">
-            <div class="mb-3">
-                <label class="form-label">Añadir nuevo ID de Twitch:</label>
-                <input type="text" name="twitch_id" class="form-control" required>
-            </div>
-            <button type="submit" class="btn boton-reservar">Añadir</button>
-        </form>
-
-        <!-- Tabla de IDs registrados -->
-        <h2 class="mb-3">IDs de Twitch registrados</h2>
-        <table class="table table-striped table-dark">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for user in ids %}
-                <tr>
-                    <td>{{ user.twitch_id }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-
-        <!-- Tabla de reservas -->
-        <h2 class="mt-5 mb-3">Reservas realizadas</h2>
-        <table class="table table-bordered table-dark">
-            <thead>
-                <tr>
-                    <th>ID de Twitch</th>
-                    <th>Hora 1</th>
-                    <th>Hora 2</th>
-                    <th>Hora 3</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reserva in reservas %}
-                <tr>
-                    <td>{{ reserva.twitch_id }}</td>
-                    <td>{{ reserva.hora1 }}</td>
-                    <td>{{ reserva.hora2 }}</td>
-                    <td>{{ reserva.hora3 }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">Panel de administración</span>
+      <nav class="nav">
+        <a href="{{ url_for('logout') }}" class="nav-link">Cerrar sesión</a>
+        <a href="{{ url_for('index') }}" class="nav-link">Volver</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- Footer -->
-    <footer class="text-center mt-5 text-muted">
-        <p>&copy; 2025 <span>Agenda de Directos</span> | Todos los derechos reservados por Alas Negras Community</p>
-    </footer>
+  <h1 class="titulo">Panel de administración</h1>
+
+  <!-- Mensajes -->
+  <div class="flash-container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <div class="formulario" style="max-width: 40em;">
+    <h2 style="margin-bottom: 1em;">Añadir streamer</h2>
+    <form method="POST" action="{{ url_for('admin_add_twitch') }}">
+      <input type="text" name="twitch_id" placeholder="ID de Twitch (sin https://)" />
+      <button type="submit" class="boton-reservar" style="margin-top: 1em;">Añadir</button>
+    </form>
+
+    <hr style="margin: 2em 0; border-color: #b30000;">
+
+    <h3 style="margin-top: 2em;">Streamers registrados</h3>
+    <ul style="text-align:left;">
+      {% for u in ids %}
+        <li>{{ u.twitch_id }}</li>
+      {% endfor %}
+    </ul>
+
+    <h3 style="margin-top: 2em;">Reservas</h3>
+    <ul style="text-align:left;">
+      {% for r in reservas %}
+        <li>{{ r.twitch_id }} → {{ r.hora1 }} {{ r.hora2 }} {{ r.hora3 }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <footer>
+    © 2025 Alas Negras Community · Todos los derechos reservados
+  </footer>
 </body>
 </html>

@@ -1,93 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Agendar Horas</title>
-
-    <!-- Fuente DM Serif Text -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
-
-    <!-- Tema Materia de Bootswatch -->
-    <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/materia/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Tu hoja de estilos -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <meta charset="UTF-8" />
+  <title>Agenda de directos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Agenda de Directos</a>
-            <div class="collapse navbar-collapse">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Administración</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
-        <h1 class="titulo">AGENDAR HORAS</h1>
-
-        <!-- Formulario principal de reservas -->
-        <form method="POST" class="card p-4 shadow-sm formulario">
-            <div class="mb-3">
-                <label class="form-label">Selecciona ID de Twitch:</label>
-                <select name="twitch_id" class="form-select" required>
-                    {% for user in ids %}
-                        <option value="{{ user.twitch_id }}">{{ user.twitch_id }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Hora 1:</label>
-                <select name="hora1" class="form-select">
-                    {% for h in horas %}
-                        <option value="{{h}}">{{h}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Hora 2:</label>
-                <select name="hora2" class="form-select">
-                    {% for h in horas %}
-                        <option value="{{h}}">{{h}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Hora 3:</label>
-                <select name="hora3" class="form-select">
-                    {% for h in horas %}
-                        <option value="{{h}}">{{h}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <button type="submit" class="btn boton-reservar">Reservar</button>
-        </form>
-
-        <!-- Mensajes flash -->
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <div class="alert alert-info mt-4">
-              {% for msg in messages %}
-                <p>{{ msg }}</p>
-              {% endfor %}
-            </div>
-          {% endif %}
-        {% endwith %}
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">Agenda de directos</span>
+      <nav class="nav">
+        {% if session.get('is_admin') %}
+          <a href="{{ url_for('admin_panel') }}" class="nav-link">Panel admin</a>
+          <a href="{{ url_for('logout') }}" class="nav-link">Cerrar sesión</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="nav-link">Administración</a>
+        {% endif %}
+      </nav>
     </div>
+  </header>
 
-    <!-- Footer serio -->
-    <footer class="text-center mt-5 text-muted">
-        <p>&copy; 2025 <span>Agenda de Directos</span> | Todos los derechos reservados por Alas Negras Community</p>
-    </footer>
+  <h1 class="titulo">Agenda de directos</h1>
+
+  <!-- Mensajes flash -->
+  <div class="flash-container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <form class="formulario" method="POST">
+    <label for="twitch_id"><strong>Streamer:</strong></label>
+    <select name="twitch_id" id="twitch_id" required>
+      <option value="">Selecciona un streamer</option>
+      {% for u in ids %}
+        <option value="{{ u.twitch_id }}">{{ u.twitch_id }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="hora1"><strong>Hora 1:</strong></label>
+    <select name="hora1" id="hora1">
+      <option value="">(Opcional)</option>
+      {% for h in horas %}
+        <option value="{{ h }}">{{ h }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="hora2"><strong>Hora 2:</strong></label>
+    <select name="hora2" id="hora2">
+      <option value="">(Opcional)</option>
+      {% for h in horas %}
+        <option value="{{ h }}">{{ h }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="hora3"><strong>Hora 3:</strong></label>
+    <select name="hora3" id="hora3">
+      <option value="">(Opcional)</option>
+      {% for h in horas %}
+        <option value="{{ h }}">{{ h }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="boton-reservar">Reservar</button>
+  </form>
+
+  <footer>
+    © 2025 Alas Negras Community · Todos los derechos reservados
+  </footer>
 </body>
 </html>

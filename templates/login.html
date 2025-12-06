@@ -1,55 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Acceso Administración</title>
-
-  <!-- Fuente DM Serif Text -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
-
-  <!-- Tema Materia de Bootswatch -->
-  <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/materia/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Tu hoja de estilos -->
+  <meta charset="UTF-8" />
+  <title>Login · Admin</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Barra de navegación -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/">Agenda de Directos</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">Acceso admin</span>
+      <nav class="nav">
+        <a href="{{ url_for('index') }}" class="nav-link">Volver</a>
+      </nav>
     </div>
-  </nav>
+  </header>
 
-  <div class="container mt-5">
-    <h1 class="titulo text-center">Acceso Administración</h1>
+  <h1 class="titulo">Acceso admin</h1>
 
-    <!-- Formulario de login -->
-    <form method="POST" class="card p-4 shadow-sm formulario" style="max-width:400px; margin:auto;">
-      <div class="mb-3">
-        <label class="form-label">Clave de acceso</label>
-        <input type="password" name="secret" class="form-control" required>
-      </div>
-      <button type="submit" class="btn boton-reservar w-100">Entrar</button>
+  <div class="formulario">
+    <form method="POST">
+      <input type="password" name="secret" placeholder="Clave secreta" required />
+      <button type="submit" class="boton-reservar" style="margin-top: 1em;">Entrar</button>
     </form>
-
-    <!-- Mensajes flash -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="alert alert-warning mt-4">
-          {% for msg in messages %}
-            <p>{{ msg }}</p>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
   </div>
 
-  <!-- Footer -->
-  <footer class="text-center mt-5 text-muted">
-    <p>&copy; 2025 <span>Agenda de Directos</span> | Todos los derechos reservados por Alas Negras Community</p>
+  <footer>
+    © 2025 Alas Negras Community · Todos los derechos reservados
   </footer>
 </body>
 </html>
+
