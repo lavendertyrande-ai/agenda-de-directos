@@ -2,70 +2,79 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Formulario de Inscripción</title>
-    <!-- Fuente seria y elegante -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Agendar Horas</title>
+
+    <!-- Fuente DM Serif Text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital@0;1&display=swap" rel="stylesheet">
+
+    <!-- Tema Materia de Bootswatch -->
+    <link href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/materia/bootstrap.min.css" rel="stylesheet">
+
     <!-- Tu hoja de estilos -->
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
 </head>
 <body>
-    <h1>Agendar Horas</h1>
+    <div class="container mt-5">
+        <h1 class="titulo">AGENDAR HORAS</h1>
 
-    <!-- Formulario principal de reservas -->
-    <form method="POST">
-        <label>Selecciona ID de Twitch:</label>
-        <select name="twitch_id" required>
-            {% for user in ids %}
-                <option value="{{ user.twitch_id }}">{{ user.twitch_id }}</option>
-            {% endfor %}
-        </select><br><br>
+        <!-- Formulario principal de reservas -->
+        <form method="POST" class="card p-4 shadow-sm formulario">
+            <div class="mb-3">
+                <label class="form-label">Selecciona ID de Twitch:</label>
+                <select name="twitch_id" class="form-select" required>
+                    {% for user in ids %}
+                        <option value="{{ user.twitch_id }}">{{ user.twitch_id }}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Hora 1:</label>
-        <select name="hora1">
-            {% for h in horas %}
-                <option value="{{h}}">{{h}}</option>
-            {% endfor %}
-        </select><br><br>
+            <div class="mb-3">
+                <label class="form-label">Hora 1:</label>
+                <select name="hora1" class="form-select">
+                    {% for h in horas %}
+                        <option value="{{h}}">{{h}}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Hora 2:</label>
-        <select name="hora2">
-            {% for h in horas %}
-                <option value="{{h}}">{{h}}</option>
-            {% endfor %}
-        </select><br><br>
+            <div class="mb-3">
+                <label class="form-label">Hora 2:</label>
+                <select name="hora2" class="form-select">
+                    {% for h in horas %}
+                        <option value="{{h}}">{{h}}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <label>Hora 3:</label>
-        <select name="hora3">
-            {% for h in horas %}
-                <option value="{{h}}">{{h}}</option>
-            {% endfor %}
-        </select><br><br>
+            <div class="mb-3">
+                <label class="form-label">Hora 3:</label>
+                <select name="hora3" class="form-select">
+                    {% for h in horas %}
+                        <option value="{{h}}">{{h}}</option>
+                    {% endfor %}
+                </select>
+            </div>
 
-        <button type="submit">Reservar</button>
-    </form>
+            <button type="submit" class="btn boton-reservar">Reservar</button>
+        </form>
 
-    <!-- Mensajes flash -->
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for msg in messages %}
-            <li>{{ msg }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-
-    <!-- Formulario para añadir nuevas IDs de Twitch -->
-    <form method="POST" action="/add_twitch">
-        <label>Añadir nuevo ID de Twitch:</label>
-        <input type="text" name="twitch_id" required>
-        <button type="submit">Añadir</button>
-    </form>
+        <!-- Mensajes flash -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-info mt-4">
+              {% for msg in messages %}
+                <p>{{ msg }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+    </div>
 
     <!-- Footer serio -->
-    <footer>
+    <footer class="text-center mt-5 text-muted">
         <p>&copy; 2025 <span>Agenda de Directos</span> | Todos los derechos reservados por Alas Negras Community</p>
     </footer>
 </body>
 </html>
-

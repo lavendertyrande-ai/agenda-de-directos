@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <!-- Bootstrap para estilos -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="mb-4">Panel de Administración</h1>
+
+    <!-- Formulario para añadir IDs -->
+    <form method="POST" action="/admin/add_twitch" class="card p-4 shadow-sm mb-4">
+        <input type="hidden" name="secret" value="{{ config['ADMIN_SECRET'] }}">
+        <div class="mb-3">
+            <label class="form-label">Añadir nuevo ID de Twitch:</label>
+            <input type="text" name="twitch_id" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-secondary">Añadir</button>
+    </form>
+
+    <!-- Tabla de IDs registrados -->
+    <h2 class="mb-3">IDs de Twitch registrados</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in ids %}
+            <tr>
+                <td>{{ user.twitch_id }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Tabla de reservas -->
+    <h2 class="mt-5 mb-3">Reservas realizadas</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID de Twitch</th>
+                <th>Hora 1</th>
+                <th>Hora 2</th>
+                <th>Hora 3</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reserva in reservas %}
+            <tr>
+                <td>{{ reserva.twitch_id }}</td>
+                <td>{{ reserva.hora1 }}</td>
+                <td>{{ reserva.hora2 }}</td>
+                <td>{{ reserva.hora3 }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
