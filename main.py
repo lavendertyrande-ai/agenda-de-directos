@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, url_for
+from flask import Flask, render_template, request, redirect, flash, url_for, session
 from db import db
 from models import Reserva, TwitchUser
 import pkgutil
@@ -17,7 +17,7 @@ app = Flask(__name__)
 # Configuración
 app.config['ADMIN_SECRET'] = "Canelito-Exiliado0909"   # 🔑 Tu clave secreta personal
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///reservas.db'
-app.config['SECRET_KEY'] = 'clave-secreta'             # Para mensajes flash
+app.config['SECRET_KEY'] = 'clave-secreta'             # Para sesiones y mensajes flash
 db.init_app(app)
 
 # Crear tablas si no existen
@@ -56,13 +56,43 @@ def index():
 
     return render_template("index.html", horas=horas, ids=ids)
 
-# Ruta privada para añadir IDs de Twitch
+# ---------------------------
+# LOGIN / LOGOUT / ADMIN
+# ---------------------------
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        secret = request.form.get("secret")
+        if secret == app.config['ADMIN_SECRET']:
+            session["is_admin"] = True
+            flash("Acceso concedido ✅")
+            return redirect(url_for("admin_panel"))
+        else:
+            flash("Clave incorrecta ❌")
+            return redirect(url_for("login"))
+    return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    session.pop("is_admin", None)
+    flash("Sesión cerrada ✅")
+    return redirect(url_for("index"))
+
+@app.route("/admin", methods=["GET"])
+def admin_panel():
+    if not session.get("is_admin"):
+        flash("Acceso restringido. Por favor, inicia sesión.")
+        return redirect(url_for("login"))
+    ids = TwitchUser.query.all()
+    reservas = Reserva.query.all()
+    return render_template("admin.html", ids=ids, reservas=reservas)
+
 @app.route("/admin/add_twitch", methods=["POST"])
-def add_twitch_admin():
-    secret = request.form.get("secret")
-    if secret != app.config['ADMIN_SECRET']:
-        flash("Acceso denegado ❌")
-        return redirect(url_for("index"))
+def admin_add_twitch():
+    if not session.get("is_admin"):
+        flash("Acceso restringido ❌")
+        return redirect(url_for("login"))
 
     twitch_id = request.form.get("twitch_id")
     if twitch_id:
@@ -70,17 +100,9 @@ def add_twitch_admin():
         db.session.add(nuevo)
         db.session.commit()
         flash("ID de Twitch añadido correctamente ✅")
-    return redirect(url_for("index"))
+    return redirect(url_for("admin_panel"))
 
-
-# Ruta para renderizar el panel de introducir IDs
-@app.route("/admin", methods=["GET"])
-def admin_panel():
-    ids = TwitchUser.query.all()
-    reservas = Reserva.query.all()
-    return render_template("admin.html", ids=ids, reservas=reservas, config=app.config)
-
-
+# ---------------------------
 
 # Ejecutar servidor
 if __name__ == "__main__":
