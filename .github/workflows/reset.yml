@@ -1,9 +1,7 @@
 name: Reset Agenda
 
 on:
-  schedule:
-    - cron: '59 22 * * 6'  # Sábados 23:59 hora España (CET) → 22:59 UTC
-  workflow_dispatch:        # Permite lanzarlo manualmente desde GitHub
+  workflow_dispatch:
 
 jobs:
   reset:
@@ -11,3 +9,4 @@ jobs:
     steps:
       - name: Llamar al endpoint de reset
         run: curl -X POST https://agenda-de-directos.onrender.com/reset
+
