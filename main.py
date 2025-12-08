@@ -134,12 +134,6 @@ def admin_add_twitch():
         flash("Introduce un ID de Twitch válido ❌")
     return redirect(url_for("admin_panel"))
 
-@app.route("/reset_manual")
-def reset_manual():
-    reset_reservas()
-    flash("Reset manual ejecutado ✅")
-    return redirect(url_for("index"))
-
 
 @app.route("/reset", methods=["POST"])
 def reset_endpoint():
