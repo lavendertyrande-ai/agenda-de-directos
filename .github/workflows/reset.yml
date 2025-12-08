@@ -8,5 +8,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Llamar al endpoint de reset
-        run: curl -X POST https://agenda-de-directos.onrender.com/reset_manual
+        run: curl -X POST https://agenda-de-directos.onrender.com/reset
 
