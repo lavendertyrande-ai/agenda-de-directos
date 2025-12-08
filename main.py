@@ -34,15 +34,21 @@ def hora_disponible(hora):
     ).first()
 
 def reset_reservas():
-    """Borra todas las reservas cada domingo"""
     with app.app_context():
-        Reserva.query.delete()
-        db.session.commit()
-        print("Reservas reiniciadas ✅")
+        try:
+            num = Reserva.query.delete()
+            db.session.commit()
+            print(f"Reservas reiniciadas ✅ ({num} filas borradas)")
+        except Exception as e:
+            print(f"Error al resetear reservas: {e}")
+
+        app.logger.info(f"Reservas reiniciadas ✅ ({num} filas borradas)")
+
+
 
 # Scheduler (opcional)
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=reset_reservas, trigger="cron", day_of_week="sun", hour=0, minute=1)
+scheduler.add_job(func=reset_reservas, trigger="cron", day_of_week="sat", hour=23, minute=59)
 scheduler.start()
 
 # ---------------------------
@@ -127,6 +133,21 @@ def admin_add_twitch():
     else:
         flash("Introduce un ID de Twitch válido ❌")
     return redirect(url_for("admin_panel"))
+
+@app.route("/reset_manual")
+def reset_manual():
+    reset_reservas()
+    flash("Reset manual ejecutado ✅")
+    return redirect(url_for("index"))
+
+
+@app.route("/reset", methods=["POST"])
+def reset_endpoint():
+    if not session.get("is_admin"):
+        return "Acceso restringido ❌", 403
+    reset_reservas()
+    return "Reset ejecutado ✅", 200
+
 
 # ---------------------------
 
